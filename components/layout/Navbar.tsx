@@ -3,6 +3,8 @@
 import Link from "next/link";
 import Image from "next/image";
 import { useState } from "react";
+import { usePathname } from "next/navigation";
+import { clsx } from "clsx";
 
 const links = [
   { href: "/about", label: "About" },
@@ -14,6 +16,7 @@ const links = [
 
 export default function Navbar() {
   const [open, setOpen] = useState(false);
+  const pathname = usePathname();
 
   return (
     <header className="sticky top-0 z-50 bg-background/90 backdrop-blur border-b border-border">
@@ -33,16 +36,24 @@ export default function Navbar() {
 
         {/* Desktop nav */}
         <ul className="hidden md:flex items-center gap-8">
-          {links.map((link) => (
-            <li key={link.href}>
-              <Link
-                href={link.href}
-                className="text-sm text-muted hover:text-heading transition-colors font-sans"
-              >
-                {link.label}
-              </Link>
-            </li>
-          ))}
+          {links.map((link) => {
+            const active = pathname === link.href;
+            return (
+              <li key={link.href}>
+                <Link
+                  href={link.href}
+                  className={clsx(
+                    "text-sm transition-colors font-sans relative pb-0.5",
+                    active
+                      ? "text-heading font-semibold after:absolute after:bottom-0 after:left-0 after:right-0 after:h-px after:bg-secondary"
+                      : "text-muted hover:text-heading"
+                  )}
+                >
+                  {link.label}
+                </Link>
+              </li>
+            );
+          })}
           <li>
             <Link
               href="/donate"
@@ -69,17 +80,23 @@ export default function Navbar() {
       {open && (
         <div className="md:hidden bg-background border-t border-border px-6 py-4">
           <ul className="flex flex-col gap-4">
-            {links.map((link) => (
-              <li key={link.href}>
-                <Link
-                  href={link.href}
-                  className="text-base text-body hover:text-primary transition-colors"
-                  onClick={() => setOpen(false)}
-                >
-                  {link.label}
-                </Link>
-              </li>
-            ))}
+            {links.map((link) => {
+              const active = pathname === link.href;
+              return (
+                <li key={link.href}>
+                  <Link
+                    href={link.href}
+                    className={clsx(
+                      "text-base transition-colors",
+                      active ? "text-primary font-semibold" : "text-body hover:text-primary"
+                    )}
+                    onClick={() => setOpen(false)}
+                  >
+                    {link.label}
+                  </Link>
+                </li>
+              );
+            })}
             <li>
               <Link
                 href="/donate"

@@ -68,7 +68,7 @@ export default function HomePage() {
   return (
     <>
       {/* Hero — split layout */}
-      <section className="bg-cream min-h-[85vh] flex items-center">
+      <section className="relative bg-cream min-h-[85vh] flex items-center">
         <Container>
           <div className="grid grid-cols-1 md:grid-cols-2 gap-12 md:gap-20 items-center py-20 md:py-0">
             {/* Left: text */}
@@ -97,7 +97,7 @@ export default function HomePage() {
 
             {/* Right: logo */}
             <div className="flex items-center justify-center">
-              <div className="relative">
+              <div className="relative max-w-xs md:max-w-none mx-auto">
                 {/* Warm glow behind logo */}
                 <div
                   className="absolute inset-0 rounded-full blur-3xl opacity-40 scale-110"
@@ -111,11 +111,19 @@ export default function HomePage() {
                   alt="Gathering Is Real"
                   width={480}
                   height={480}
-                  className="relative rounded-full object-cover shadow-2xl ring-4 ring-border"
+                  className="relative rounded-full object-cover shadow-2xl ring-4 ring-border w-full h-auto"
                   priority
                 />
               </div>
             </div>
+          </div>
+
+          {/* Scroll indicator */}
+          <div className="hidden md:flex absolute bottom-8 left-1/2 -translate-x-1/2 flex-col items-center gap-1 text-muted animate-bounce">
+            <span className="text-xs font-sans tracking-widest uppercase">Scroll</span>
+            <svg width="16" height="16" viewBox="0 0 16 16" fill="none">
+              <path d="M8 4v8M4 8l4 4 4-4" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"/>
+            </svg>
           </div>
         </Container>
       </section>
