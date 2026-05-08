@@ -1,4 +1,5 @@
 import Link from "next/link";
+import Image from "next/image";
 
 const navLinks = [
   { href: "/about", label: "About" },
@@ -16,11 +17,17 @@ export default function Footer() {
         <div className="grid grid-cols-1 md:grid-cols-3 gap-10">
           {/* Brand */}
           <div>
-            <Link
-              href="/"
-              className="font-display text-2xl font-semibold text-heading block mb-3"
-            >
-              Gathering Is Real
+            <Link href="/" className="flex items-center gap-2.5 mb-4 group w-fit">
+              <Image
+                src="/images/logos/gatheringLogoCircle.JPG"
+                alt="Gathering Is Real logo"
+                width={40}
+                height={40}
+                className="rounded-full object-cover ring-1 ring-border group-hover:ring-secondary transition-all"
+              />
+              <span className="font-display text-xl font-semibold text-heading">
+                Gathering Is Real
+              </span>
             </Link>
             <p className="text-sm text-muted leading-relaxed max-w-xs">
               Connecting people seeking purpose with meaningful service

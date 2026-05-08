@@ -2,6 +2,7 @@ import Button from "@/components/ui/Button";
 import Card from "@/components/ui/Card";
 import Container from "@/components/ui/Container";
 import SectionHeading from "@/components/ui/SectionHeading";
+import AnimatedSection from "@/components/ui/AnimatedSection";
 import type { Metadata } from "next";
 
 export const metadata: Metadata = {
@@ -78,12 +79,14 @@ export default function AboutPage() {
       <section className="py-20 md:py-28">
         <Container>
           <div className="grid grid-cols-1 md:grid-cols-2 gap-16 items-center">
-            <div className="bg-cream rounded-3xl p-12 aspect-square flex items-center justify-center">
-              <p className="font-display text-6xl text-center text-secondary leading-none">
-                "Bringing<br />more light<br />to the world."
-              </p>
-            </div>
-            <div>
+            <AnimatedSection>
+              <div className="bg-cream rounded-3xl p-12 aspect-square flex items-center justify-center">
+                <p className="font-display text-6xl text-center text-secondary leading-none">
+                  "Bringing<br />more light<br />to the world."
+                </p>
+              </div>
+            </AnimatedSection>
+            <AnimatedSection delay={0.1}>
               <SectionHeading
                 eyebrow="Our Story"
                 title="Built on the belief that service transforms."
@@ -109,7 +112,7 @@ export default function AboutPage() {
               <div className="mt-8">
                 <Button href="/programs">Explore Opportunities</Button>
               </div>
-            </div>
+            </AnimatedSection>
           </div>
         </Container>
       </section>
@@ -117,15 +120,18 @@ export default function AboutPage() {
       {/* Values */}
       <section className="py-20 md:py-28 bg-cream">
         <Container>
-          <SectionHeading
-            eyebrow="What We Stand For"
-            title="Our Values"
-            center
-            className="mb-12"
-          />
+          <AnimatedSection>
+            <SectionHeading
+              eyebrow="What We Stand For"
+              title="Our Values"
+              center
+              className="mb-12"
+            />
+          </AnimatedSection>
           <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-            {values.map((value) => (
-              <Card key={value.title}>
+            {values.map((value, i) => (
+              <AnimatedSection key={value.title} delay={i * 0.1}>
+              <Card>
                 <div className="p-8 text-center">
                   <span className="text-4xl block mb-4">{value.icon}</span>
                   <h3 className="font-display text-2xl font-semibold text-heading mb-3">
@@ -136,6 +142,7 @@ export default function AboutPage() {
                   </p>
                 </div>
               </Card>
+              </AnimatedSection>
             ))}
           </div>
         </Container>
@@ -144,16 +151,19 @@ export default function AboutPage() {
       {/* Team */}
       <section className="py-20 md:py-28">
         <Container>
-          <SectionHeading
-            eyebrow="The People"
-            title="Our Team"
-            subtitle="We are a small, dedicated team committed to making service accessible to everyone."
-            center
-            className="mb-12"
-          />
+          <AnimatedSection>
+            <SectionHeading
+              eyebrow="The People"
+              title="Our Team"
+              subtitle="We are a small, dedicated team committed to making service accessible to everyone."
+              center
+              className="mb-12"
+            />
+          </AnimatedSection>
           <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-            {team.map((member) => (
-              <Card key={member.id} hover>
+            {team.map((member, i) => (
+              <AnimatedSection key={member.id} delay={i * 0.1}>
+              <Card hover>
                 <div className="p-8">
                   <div className="w-16 h-16 rounded-full bg-cream border-2 border-border mb-5" />
                   <h3 className="font-display text-xl font-semibold text-heading">
@@ -167,6 +177,7 @@ export default function AboutPage() {
                   </p>
                 </div>
               </Card>
+              </AnimatedSection>
             ))}
           </div>
         </Container>
@@ -175,6 +186,7 @@ export default function AboutPage() {
       {/* CTA */}
       <section className="py-20 bg-cream border-t border-border">
         <Container narrow>
+          <AnimatedSection>
           <div className="text-center">
             <h2 className="font-display text-4xl font-semibold text-heading">
               Ready to get involved?
@@ -191,6 +203,7 @@ export default function AboutPage() {
               </Button>
             </div>
           </div>
+          </AnimatedSection>
         </Container>
       </section>
     </>

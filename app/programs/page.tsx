@@ -2,6 +2,7 @@ import Button from "@/components/ui/Button";
 import Card from "@/components/ui/Card";
 import Container from "@/components/ui/Container";
 import SectionHeading from "@/components/ui/SectionHeading";
+import AnimatedSection from "@/components/ui/AnimatedSection";
 import type { Metadata } from "next";
 
 export const metadata: Metadata = {
@@ -86,8 +87,9 @@ export default function ProgramsPage() {
       <section className="py-20 md:py-28">
         <Container>
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-            {programs.map((program) => (
-              <Card key={program.title} hover>
+            {programs.map((program, i) => (
+              <AnimatedSection key={program.title} delay={i * 0.08}>
+              <Card hover>
                 <div className="p-8 flex flex-col h-full">
                   <div className="flex items-start justify-between mb-4">
                     <span className="text-3xl">{program.icon}</span>
@@ -108,6 +110,7 @@ export default function ProgramsPage() {
                   </div>
                 </div>
               </Card>
+              </AnimatedSection>
             ))}
           </div>
         </Container>
@@ -116,6 +119,7 @@ export default function ProgramsPage() {
       {/* CTA */}
       <section className="py-16 bg-cream border-t border-border">
         <Container narrow>
+          <AnimatedSection>
           <div className="text-center">
             <SectionHeading
               title="Don't see the right fit?"
@@ -128,6 +132,7 @@ export default function ProgramsPage() {
               </Button>
             </div>
           </div>
+          </AnimatedSection>
         </Container>
       </section>
     </>

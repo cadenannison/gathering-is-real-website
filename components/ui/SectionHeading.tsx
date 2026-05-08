@@ -26,7 +26,7 @@ export default function SectionHeading({
         {title}
       </h2>
       {subtitle && (
-        <p className="mt-4 text-muted text-lg leading-relaxed font-sans max-w-2xl">
+        <p className={clsx("mt-4 text-muted text-lg leading-relaxed font-sans max-w-2xl", center && "mx-auto")}>
           {subtitle}
         </p>
       )}

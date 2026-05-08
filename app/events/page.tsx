@@ -1,6 +1,7 @@
 import Card from "@/components/ui/Card";
 import Container from "@/components/ui/Container";
 import SectionHeading from "@/components/ui/SectionHeading";
+import AnimatedSection from "@/components/ui/AnimatedSection";
 import type { Metadata } from "next";
 
 export const metadata: Metadata = {
@@ -88,8 +89,9 @@ export default function EventsPage() {
             className="mb-10"
           />
           <div className="space-y-5">
-            {upcomingEvents.map((event) => (
-              <Card key={event.slug} hover>
+            {upcomingEvents.map((event, i) => (
+              <AnimatedSection key={event.slug} delay={i * 0.08}>
+              <Card hover>
                 <div className="p-6 md:p-8 flex flex-col md:flex-row md:items-center gap-6">
                   {/* Date block */}
                   <div className="shrink-0 w-20 text-center">
@@ -124,6 +126,7 @@ export default function EventsPage() {
                   </div>
                 </div>
               </Card>
+              </AnimatedSection>
             ))}
           </div>
         </Container>

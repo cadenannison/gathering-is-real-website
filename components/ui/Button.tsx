@@ -1,5 +1,6 @@
 import Link from "next/link";
 import { clsx } from "clsx";
+import { twMerge } from "tailwind-merge";
 
 type Variant = "primary" | "secondary" | "ghost";
 type Size = "sm" | "md" | "lg";
@@ -41,7 +42,7 @@ export default function Button({
   type = "button",
   disabled,
 }: ButtonProps) {
-  const classes = clsx(base, variants[variant], sizes[size], className);
+  const classes = twMerge(clsx(base, variants[variant], sizes[size], className));
 
   if (href) {
     return (

@@ -1,6 +1,7 @@
 import Card from "@/components/ui/Card";
 import Container from "@/components/ui/Container";
 import SectionHeading from "@/components/ui/SectionHeading";
+import AnimatedSection from "@/components/ui/AnimatedSection";
 import Link from "next/link";
 import type { Metadata } from "next";
 
@@ -73,6 +74,7 @@ export default function BlogPage() {
       <section className="py-20 md:py-28">
         <Container>
           {/* Featured post */}
+          <AnimatedSection>
           <Link href={`/blog/${posts[0].slug}`} className="block mb-8 group">
             <Card hover>
               <div className="p-10 md:p-14">
@@ -101,11 +103,13 @@ export default function BlogPage() {
               </div>
             </Card>
           </Link>
+          </AnimatedSection>
 
           {/* Grid */}
           <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-            {posts.slice(1).map((post) => (
-              <Link key={post.slug} href={`/blog/${post.slug}`} className="group">
+            {posts.slice(1).map((post, i) => (
+              <AnimatedSection key={post.slug} delay={i * 0.1}>
+              <Link href={`/blog/${post.slug}`} className="group block h-full">
                 <Card hover className="h-full">
                   <div className="p-7 flex flex-col h-full">
                     <div className="flex items-center gap-2 mb-4">
@@ -129,6 +133,7 @@ export default function BlogPage() {
                   </div>
                 </Card>
               </Link>
+              </AnimatedSection>
             ))}
           </div>
         </Container>
