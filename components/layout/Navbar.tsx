@@ -1,6 +1,7 @@
 "use client";
 
 import Link from "next/link";
+import Image from "next/image";
 import { useState } from "react";
 
 const links = [
@@ -17,11 +18,17 @@ export default function Navbar() {
   return (
     <header className="sticky top-0 z-50 bg-background/90 backdrop-blur border-b border-border">
       <nav className="max-w-6xl mx-auto px-6 flex items-center justify-between h-16">
-        <Link
-          href="/"
-          className="font-display text-xl font-semibold text-heading tracking-wide"
-        >
-          Gathering Is Real
+        <Link href="/" className="flex items-center gap-2.5 group">
+          <Image
+            src="/images/logos/gatheringLogoCircle.JPG"
+            alt="Gathering Is Real logo"
+            width={36}
+            height={36}
+            className="rounded-full object-cover ring-1 ring-border group-hover:ring-secondary transition-all"
+          />
+          <span className="font-display text-xl font-semibold text-heading tracking-wide">
+            Gathering Is Real
+          </span>
         </Link>
 
         {/* Desktop nav */}
