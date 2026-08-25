@@ -1,208 +1,139 @@
+import Image from "next/image";
 import Button from "@/components/ui/Button";
-import Card from "@/components/ui/Card";
 import Container from "@/components/ui/Container";
-import SectionHeading from "@/components/ui/SectionHeading";
 import AnimatedSection from "@/components/ui/AnimatedSection";
+import EmptyPhotoPlaceholder from "@/components/ui/EmptyPhotoPlaceholder";
+import { founders } from "@/data/founders";
+import { images } from "@/data/media";
 import type { Metadata } from "next";
 
 export const metadata: Metadata = {
   title: "About",
   description:
-    "Learn about the mission, story, and team behind Gathering Is Real.",
+    "Everyone can make a difference even in ONE minute. Learn the story behind Gathering Is Real.",
 };
 
-const values = [
-  {
-    icon: "🌟",
-    title: "Purpose",
-    description:
-      "We believe everyone carries a unique gift. Service is one of the most powerful ways to discover and express it.",
-  },
-  {
-    icon: "🤝",
-    title: "Community",
-    description:
-      "Real change happens when people come together. We exist to facilitate those connections.",
-  },
-  {
-    icon: "💛",
-    title: "Light",
-    description:
-      "Every act of service adds light to the world. We are committed to multiplying that light.",
-  },
-];
-
-const team = [
-  {
-    id: "founder",
-    name: "Team Member",
-    role: "Founder & Executive Director",
-    bio: "Passionate about connecting people to purpose-driven work in their communities.",
-  },
-  {
-    id: "programs-director",
-    name: "Team Member",
-    role: "Programs Director",
-    bio: "Oversees our service programs and ensures every volunteer has a meaningful experience.",
-  },
-  {
-    id: "outreach-lead",
-    name: "Team Member",
-    role: "Community Outreach Lead",
-    bio: "Builds relationships with partner organizations and community stakeholders.",
-  },
+const story = [
+  "Gathering Is Real was founded in April of 2026.",
+  "Our mission is to help find service opportunities for those looking to find more purpose and bring about more light to the world.",
+  "Brooklyn and Maddisyn both served 18 month missions for The Church of Jesus Christ of Latter-day Saints. Ever since returning home in 2025, they have had a burning desire to SERVE MORE. With a lot of prayers they felt inspired to start setting up service projects.",
+  "People around the world share places that hold special meaning to them, and Gathering Is Real works to find meaningful ways to serve there.",
+  "The idea for the first project came unexpectedly through a conversation on an airplane. A fellow traveler shared his connection to Guam and his plans to return there in May, sparking the idea to find a meaningful way to serve the community. That conversation became the beginning of Gathering Is Real's first service project.",
+  "They are excited to help grow awareness to places around the world that don't get as much attention as they deserve and to give more people an outlet to serve.",
 ];
 
 export default function AboutPage() {
   return (
     <>
-      {/* Hero */}
+      {/* p.6 — Hero */}
       <section className="bg-cream py-24 md:py-32">
         <Container narrow>
           <div className="text-center">
-            <span className="text-xs font-semibold text-secondary uppercase tracking-widest font-sans">
+            <span className="font-sans text-xs font-semibold uppercase tracking-widest text-secondary">
               About Us
             </span>
-            <h1 className="font-display text-5xl md:text-6xl font-semibold text-heading mt-4 leading-tight">
+            <h1 className="mt-4 font-display text-5xl font-semibold leading-tight text-heading md:text-6xl">
               Who We Are
             </h1>
-            <p className="mt-6 text-lg text-muted leading-relaxed font-sans">
-              Gathering Is Real was born from a simple belief: that people who
-              want to serve just need a place to begin. We make that beginning
-              as easy as possible.
+            <p className="mt-6 font-sans text-lg leading-relaxed text-muted">
+              Everyone can make a difference even in{" "}
+              <span className="font-semibold text-heading">ONE</span> minute.
+              Our mission is to make serving simple by connecting people with
+              meaningful opportunities that bring light to lives around the
+              world.
             </p>
           </div>
         </Container>
       </section>
 
-      {/* Story */}
+      {/* p.7 — Our Story */}
       <section className="py-20 md:py-28">
         <Container>
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-16 items-center">
-            <AnimatedSection>
-              <div className="bg-cream rounded-3xl p-12 aspect-square flex items-center justify-center">
-                <p className="font-display text-6xl text-center text-secondary leading-none">
-                  "Bringing<br />more light<br />to the world."
-                </p>
-              </div>
+          <div className="grid grid-cols-1 items-start gap-12 md:grid-cols-[0.85fr_1fr] md:gap-16">
+            <AnimatedSection className="md:sticky md:top-24">
+              {images.aboutStory ? (
+                <Image
+                  src={images.aboutStory}
+                  alt="Brooklyn and Maddisyn, the founders of Gathering Is Real"
+                  width={1200}
+                  height={800}
+                  sizes="(max-width: 768px) 100vw, 40vw"
+                  className="aspect-[3/2] w-full rounded-3xl object-cover shadow-lg ring-1 ring-border"
+                />
+              ) : (
+                <EmptyPhotoPlaceholder
+                  label="Photo of Brooklyn and Maddisyn"
+                  className="aspect-[3/2] w-full rounded-3xl"
+                />
+              )}
             </AnimatedSection>
+
             <AnimatedSection delay={0.1}>
-              <SectionHeading
-                eyebrow="Our Story"
-                title="Built on the belief that service transforms."
-              />
-              <div className="mt-6 space-y-4 text-muted font-sans leading-relaxed">
-                <p>
-                  Gathering Is Real started as a small group of friends who
-                  wanted to volunteer but didn&apos;t know where to start. The
-                  opportunities were out there — they just weren&apos;t easy to
-                  find.
-                </p>
-                <p>
-                  We built Gathering Is Real to change that. Today, we connect
-                  volunteers with vetted service opportunities, support partner
-                  organizations, and foster a community rooted in purpose and
-                  generosity.
-                </p>
-                <p>
-                  Whether you have one hour or one day, a specialized skill or
-                  just a willing heart — there&apos;s a place for you here.
-                </p>
+              <h2 className="font-display text-4xl font-semibold leading-tight text-heading md:text-5xl">
+                Our Story
+              </h2>
+              <div className="mt-7 space-y-5 font-sans leading-relaxed text-muted">
+                {story.map((paragraph) => (
+                  <p key={paragraph.slice(0, 32)}>{paragraph}</p>
+                ))}
               </div>
-              <div className="mt-8">
-                <Button href="/programs">Explore Opportunities</Button>
+              <div className="mt-9">
+                <Button href="/#map" size="lg">
+                  Explore Opportunities
+                </Button>
               </div>
             </AnimatedSection>
           </div>
         </Container>
       </section>
 
-      {/* Values */}
-      <section className="py-20 md:py-28 bg-cream">
+      {/* p.9 — The Founders */}
+      <section className="bg-cream py-20 md:py-28">
         <Container>
           <AnimatedSection>
-            <SectionHeading
-              eyebrow="What We Stand For"
-              title="Our Values"
-              center
-              className="mb-12"
-            />
-          </AnimatedSection>
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-            {values.map((value, i) => (
-              <AnimatedSection key={value.title} delay={i * 0.1}>
-              <Card>
-                <div className="p-8 text-center">
-                  <span className="text-4xl block mb-4">{value.icon}</span>
-                  <h3 className="font-display text-2xl font-semibold text-heading mb-3">
-                    {value.title}
-                  </h3>
-                  <p className="text-sm text-muted leading-relaxed font-sans">
-                    {value.description}
-                  </p>
-                </div>
-              </Card>
-              </AnimatedSection>
-            ))}
-          </div>
-        </Container>
-      </section>
-
-      {/* Team */}
-      <section className="py-20 md:py-28">
-        <Container>
-          <AnimatedSection>
-            <SectionHeading
-              eyebrow="The People"
-              title="Our Team"
-              subtitle="We are a small, dedicated team committed to making service accessible to everyone."
-              center
-              className="mb-12"
-            />
-          </AnimatedSection>
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-            {team.map((member, i) => (
-              <AnimatedSection key={member.id} delay={i * 0.1}>
-              <Card hover>
-                <div className="p-8">
-                  <div className="w-16 h-16 rounded-full bg-cream border-2 border-border mb-5" />
-                  <h3 className="font-display text-xl font-semibold text-heading">
-                    {member.name}
-                  </h3>
-                  <p className="text-xs text-secondary font-semibold uppercase tracking-wider font-sans mt-1 mb-3">
-                    {member.role}
-                  </p>
-                  <p className="text-sm text-muted leading-relaxed font-sans">
-                    {member.bio}
-                  </p>
-                </div>
-              </Card>
-              </AnimatedSection>
-            ))}
-          </div>
-        </Container>
-      </section>
-
-      {/* CTA */}
-      <section className="py-20 bg-cream border-t border-border">
-        <Container narrow>
-          <AnimatedSection>
-          <div className="text-center">
-            <h2 className="font-display text-4xl font-semibold text-heading">
-              Ready to get involved?
+            <h2 className="text-center font-display text-4xl font-semibold leading-tight text-heading md:text-5xl">
+              The Founders
             </h2>
-            <p className="mt-4 text-muted font-sans">
-              Browse opportunities or reach out to our team.
-            </p>
-            <div className="mt-8 flex flex-col sm:flex-row gap-4 justify-center">
-              <Button href="/programs" size="lg">
-                Find Opportunities
-              </Button>
-              <Button href="/contact" variant="secondary" size="lg">
+          </AnimatedSection>
+
+          <div className="mx-auto mt-12 grid max-w-3xl grid-cols-1 gap-8 sm:grid-cols-2">
+            {founders.map((founder, i) => (
+              <AnimatedSection key={founder.id} delay={i * 0.1}>
+                <figure>
+                  {founder.photo ? (
+                    <Image
+                      src={founder.photo}
+                      alt={founder.name}
+                      width={720}
+                      height={960}
+                      sizes="(max-width: 640px) 100vw, 340px"
+                      className="aspect-[3/4] w-full rounded-3xl object-cover shadow-md ring-1 ring-border"
+                    />
+                  ) : (
+                    <EmptyPhotoPlaceholder
+                      label={`Photo of ${founder.name}`}
+                      className="aspect-[3/4] w-full rounded-3xl"
+                    />
+                  )}
+                  <figcaption className="mt-5 text-center">
+                    <p className="font-display text-2xl font-semibold text-heading">
+                      {founder.name}
+                    </p>
+                    <p className="mt-1 font-sans text-xs font-semibold uppercase tracking-widest text-secondary">
+                      {founder.role}
+                    </p>
+                  </figcaption>
+                </figure>
+              </AnimatedSection>
+            ))}
+          </div>
+
+          <AnimatedSection delay={0.2}>
+            <div className="mt-14 text-center">
+              <Button href="/contact" size="lg">
                 Contact Us
               </Button>
             </div>
-          </div>
           </AnimatedSection>
         </Container>
       </section>

@@ -8,15 +8,12 @@
     "start": "next start"
   },
   "dependencies": {
-    "@portabletext/react": "^6.2.0",
-    "@sanity/cli": "^6.5.0",
-    "@sanity/image-url": "^2.1.1",
     "clsx": "^2.1.1",
     "framer-motion": "^12.38.0",
     "next": "16.2.5",
-    "next-sanity": "^12.4.3",
     "react": "19.2.4",
     "react-dom": "19.2.4",
+    "react-simple-maps": "3.0.0",
     "resend": "^6.12.3",
     "tailwind-merge": "^3.5.0"
   },
@@ -25,7 +22,14 @@
     "@types/node": "^20",
     "@types/react": "^19",
     "@types/react-dom": "^19",
+    "@types/react-simple-maps": "^3.0.6",
     "tailwindcss": "^4",
     "typescript": "^5"
+  },
+  "overrides": {
+    "react-simple-maps": {
+      "react": "$react",
+      "react-dom": "$react-dom"
+    }
   }
 }
