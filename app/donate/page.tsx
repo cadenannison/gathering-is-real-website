@@ -1,123 +1,92 @@
-import Button from "@/components/ui/Button";
+import Image from "next/image";
 import Container from "@/components/ui/Container";
+import AnimatedSection from "@/components/ui/AnimatedSection";
 import type { Metadata } from "next";
 
 export const metadata: Metadata = {
   title: "Donate",
   description:
-    "Support Gathering Is Real and help us bring more light to the world.",
+    "Give through Venmo or Zeffy and help bring more light to the world.",
 };
 
-const impact = [
-  { amount: "$10", description: "Covers supplies for one volunteer shift" },
-  { amount: "$25", description: "Helps host a community orientation event" },
-  { amount: "$50", description: "Sponsors a volunteer for an entire month" },
-  { amount: "$100", description: "Funds a community service event from start to finish" },
+const methods = [
+  {
+    key: "venmo",
+    eyebrow: "Donate via Venmo",
+    handle: "@Gatheringisreal",
+    blurb:
+      "Scan the code or open Venmo and send your donation directly. Include a note — we love hearing why you give.",
+    qr: "/images/qr/venmo.png",
+    href: "https://venmo.com/code?user_id=4667423261197681885&created=1787176974.037128&printed=1",
+    cta: "Open Venmo",
+  },
+  {
+    key: "zeffy",
+    eyebrow: "Donate via Zeffy",
+    handle: "Donate to Change Lives",
+    blurb:
+      "Give by card through Zeffy. Every cent reaches the project — Zeffy takes no platform fee.",
+    qr: "/images/qr/zeffy.svg",
+    href: "https://www.zeffy.com/en-US/donation-form/donate-to-change-lives-20730",
+    cta: "Open Zeffy",
+  },
 ];
 
 export default function DonatePage() {
   return (
-    <>
-      {/* Hero */}
-      <section className="bg-primary py-24 md:py-32">
-        <Container narrow>
+    <section className="py-20 md:py-28">
+      <Container>
+        <AnimatedSection>
           <div className="text-center">
-            <span className="text-xs font-semibold text-accent uppercase tracking-widest font-sans">
+            <span className="font-sans text-xs font-semibold uppercase tracking-widest text-secondary">
               Support the Mission
             </span>
-            <h1 className="font-display text-5xl md:text-6xl font-semibold text-cream mt-4 leading-tight">
-              Help Bring More<br />Light to the World
+            <h1 className="mt-4 font-display text-5xl font-semibold leading-tight text-heading md:text-6xl">
+              Two ways to give
             </h1>
-            <p className="mt-6 text-lg text-cream/70 leading-relaxed font-sans max-w-xl mx-auto">
-              Every dollar you give helps us connect more people to meaningful
-              service — and to the purpose they&apos;ve been looking for.
-            </p>
           </div>
-        </Container>
-      </section>
+        </AnimatedSection>
 
-      {/* Venmo */}
-      <section className="py-20 md:py-28">
-        <Container narrow>
-          <div className="bg-cream rounded-3xl border border-border p-10 md:p-16 text-center">
-            <p className="text-xs font-semibold text-secondary uppercase tracking-widest font-sans mb-4">
-              Donate via Venmo
-            </p>
-            <h2 className="font-display text-4xl font-semibold text-heading mb-3">
-              @GatheringIsReal
-            </h2>
-            <p className="text-muted font-sans mb-8">
-              Tap below to open Venmo and send your donation directly.
-              Include a note — we love hearing why you give.
-            </p>
-
-            {/* Venmo QR placeholder */}
-            <div className="mx-auto w-48 h-48 bg-surface rounded-2xl border-2 border-dashed border-border flex items-center justify-center mb-8">
-              <p className="text-xs text-muted font-sans text-center px-4">
-                Venmo QR Code<br />(add venmo-qr.png to /public)
-              </p>
-            </div>
-
-            <a
-              href="https://venmo.com/GatheringIsReal"
-              target="_blank"
-              rel="noopener noreferrer"
-              className="inline-flex items-center justify-center rounded-full font-sans font-medium text-base px-8 py-3 bg-primary text-cream hover:bg-primary-hover transition-colors"
-            >
-              Open Venmo →
-            </a>
-
-            <p className="mt-6 text-xs text-muted font-sans">
-              Gathering Is Real is a registered non-profit. Donations may be
-              tax-deductible — consult your tax advisor.
-            </p>
-          </div>
-        </Container>
-      </section>
-
-      {/* Impact */}
-      <section className="py-16 bg-cream border-t border-border">
-        <Container>
-          <div className="text-center mb-12">
-            <h2 className="font-display text-4xl font-semibold text-heading">
-              Your Gift Makes an Impact
-            </h2>
-          </div>
-          <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-6">
-            {impact.map((item) => (
-              <div
-                key={item.amount}
-                className="bg-surface rounded-2xl border border-border p-6 text-center"
-              >
-                <p className="font-display text-4xl font-semibold text-heading mb-2">
-                  {item.amount}
+        <div className="mx-auto mt-14 grid max-w-4xl grid-cols-1 gap-6 md:grid-cols-2">
+          {methods.map((method, i) => (
+            <AnimatedSection key={method.key} delay={i * 0.1}>
+              <div className="flex h-full flex-col items-center rounded-3xl border border-border bg-cream p-8 text-center md:p-10">
+                <p className="font-sans text-xs font-semibold uppercase tracking-widest text-secondary">
+                  {method.eyebrow}
                 </p>
-                <p className="text-sm text-muted font-sans leading-relaxed">
-                  {item.description}
+                <h2 className="mt-3 font-display text-3xl font-semibold text-heading">
+                  {method.handle}
+                </h2>
+                <p className="mt-4 max-w-xs font-sans text-sm leading-relaxed text-muted">
+                  {method.blurb}
                 </p>
+
+                <Image
+                  src={method.qr}
+                  alt={`QR code to donate via ${method.key}`}
+                  width={180}
+                  height={180}
+                  className="my-8 h-44 w-44 rounded-2xl border border-border bg-white p-2"
+                />
+
+                <a
+                  href={method.href}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="mt-auto inline-flex items-center justify-center rounded-full bg-primary px-8 py-3 font-sans text-base font-medium text-cream transition-colors hover:bg-primary-hover focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary focus-visible:ring-offset-2"
+                >
+                  {method.cta} →
+                </a>
               </div>
-            ))}
-          </div>
-        </Container>
-      </section>
+            </AnimatedSection>
+          ))}
+        </div>
 
-      {/* Other ways */}
-      <section className="py-20">
-        <Container narrow>
-          <div className="text-center">
-            <h2 className="font-display text-3xl font-semibold text-heading mb-4">
-              Other Ways to Give
-            </h2>
-            <p className="text-muted font-sans mb-8">
-              Not a Venmo user? Reach out and we&apos;ll find another way to
-              accept your support.
-            </p>
-            <Button href="/contact" variant="secondary">
-              Contact Us
-            </Button>
-          </div>
-        </Container>
-      </section>
-    </>
+        <p className="mx-auto mt-10 max-w-md text-center font-sans text-xs leading-relaxed text-muted">
+          Gathering Is Real is a registered non-profit. Donations may be
+          tax-deductible — consult your tax advisor.
+        </p>
+      </Container>
+    </section>
   );
 }

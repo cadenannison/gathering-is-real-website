@@ -3,6 +3,16 @@
 :root {
   --background: #F9F5EE;
   --foreground: #2C1810;
+
+  /* Map palette — warm sand ocean, near-white land, sun-gold pins.
+     Kept out of @theme because these are only ever used as SVG paint. */
+  --map-ocean: #EFE2CE;
+  --map-land: #FDFAF4;
+  --map-line: #D9C4A6;
+  --map-land-hover: #F6DCB4;
+  --map-line-hover: #C97B35;
+  --map-star: #E8A820;
+  --map-star-line: #7A3B22;
 }
 
 @theme inline {

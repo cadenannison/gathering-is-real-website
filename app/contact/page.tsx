@@ -1,5 +1,7 @@
 import Container from "@/components/ui/Container";
+import AnimatedSection from "@/components/ui/AnimatedSection";
 import ContactForm from "@/components/sections/ContactForm";
+import SocialLinks from "@/components/sections/SocialLinks";
 import type { Metadata } from "next";
 
 export const metadata: Metadata = {
@@ -29,9 +31,21 @@ export default function ContactPage() {
       </section>
 
       {/* Form */}
-      <section className="py-20 md:py-28">
+      <section className="py-20 md:py-24">
         <Container narrow>
           <ContactForm />
+        </Container>
+      </section>
+
+      {/* p.20 — Follow along */}
+      <section className="pb-20 md:pb-28">
+        <Container narrow>
+          <AnimatedSection>
+            <h2 className="mb-8 text-center font-sans text-xs font-semibold uppercase tracking-widest text-secondary">
+              Follow Along
+            </h2>
+            <SocialLinks />
+          </AnimatedSection>
         </Container>
       </section>
     </>
