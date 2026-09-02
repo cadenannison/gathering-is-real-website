@@ -69,7 +69,10 @@
       "Bash(npm uninstall *)",
       "Bash(node -e \"const p=require\\('./package.json'\\);console.log\\('deps:',Object.keys\\(p.dependencies\\).join\\(', '\\)\\);console.log\\('devDeps:',Object.keys\\(p.devDependencies\\).join\\(', '\\)\\)\")",
       "Bash(ffprobe -v error -show_entries stream=index,codec_type,codec_name,bit_rate -of default=nw=1 public/videos/packingBox.mp4)",
-      "Bash(node -e \"const p=require\\('./package.json'\\);console.log\\('deps:   ',Object.keys\\(p.dependencies\\).join\\(', '\\)\\);console.log\\('devDeps:',Object.keys\\(p.devDependencies\\).join\\(', '\\)\\)\")"
+      "Bash(node -e \"const p=require\\('./package.json'\\);console.log\\('deps:   ',Object.keys\\(p.dependencies\\).join\\(', '\\)\\);console.log\\('devDeps:',Object.keys\\(p.devDependencies\\).join\\(', '\\)\\)\")",
+      "Bash(sed -n '/function buildNoteEmail/,/^}/p' app/api/submit/route.ts)",
+      "Bash(sed -n '/resend.emails.send/,/}\\);/p' app/api/submit/route.ts)",
+      "Bash(curl -s -X POST http://localhost:3000/api/submit -H 'Content-Type: application/json' -d '{\"type\":\"note\",\"to\":\"Our next project\",\"note\":\"Sending love and prayers your way.\",\"name\":\"Test Person\",\"fromPlace\":\"Provo, Utah\"}' -w '\\\\nHTTP %{http_code}\\\\n')"
     ],
     "additionalDirectories": [
       "/Users/cadenannison/projects/gatheringIsReal/GatheringIsReal-website/app/events",
