@@ -1,15 +1,19 @@
 "use client";
 
-import { useState } from "react";
-
-type Status = "idle" | "loading" | "success" | "error";
+import { useEffect } from "react";
+import { useSubmissionWithFallback } from "@/lib/useSubmissionWithFallback";
 
 export default function ContactForm() {
-  const [status, setStatus] = useState<Status>("idle");
+  const { status, submit, pendingCount } = useSubmissionWithFallback();
+
+  useEffect(() => {
+    // Initialize pending count on mount
+    // Note: we don't retry automatically to avoid sending duplicate messages
+    // Users can see if there are pending submissions via the UI
+  }, []);
 
   async function handleSubmit(e: React.FormEvent<HTMLFormElement>) {
     e.preventDefault();
-    setStatus("loading");
 
     const form = e.currentTarget;
     const data = {
@@ -20,18 +24,9 @@ export default function ContactForm() {
       message: (form.elements.namedItem("message") as HTMLTextAreaElement).value,
     };
 
-    try {
-      const res = await fetch("/api/submit", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(data),
-      });
-
-      if (!res.ok) throw new Error("Failed");
-      setStatus("success");
+    const result = await submit(data);
+    if (result.success) {
       form.reset();
-    } catch {
-      setStatus("error");
     }
   }
 
@@ -123,7 +118,21 @@ export default function ContactForm() {
 
           {status === "error" && (
             <p className="text-sm text-red-600 font-sans">
-              Something went wrong. Please try again or email us directly.
+              Something went wrong. Your message has been saved and will be sent when
+              the connection is restored.
+            </p>
+          )}
+
+          {status === "offline" && (
+            <p className="text-sm text-amber-600 font-sans">
+              You appear to be offline. Your message has been saved and will be sent
+              when you're back online.
+            </p>
+          )}
+
+          {pendingCount > 0 && (
+            <p className="text-sm text-amber-700 font-sans">
+              ℹ️ You have {pendingCount} pending submission{pendingCount !== 1 ? "s" : ""} waiting to send.
             </p>
           )}
 

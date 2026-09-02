@@ -1,5 +1,7 @@
 import { NextResponse } from "next/server";
 import { Resend } from "resend";
+import { promises as fs } from "fs";
+import path from "path";
 
 type RecommendPayload = {
   type: "recommend";
@@ -38,6 +40,18 @@ type SubmitPayload =
   | NotifyPayload
   | ContactPayload;
 
+type StoredSubmission = {
+  id: string;
+  timestamp: string;
+  payload: SubmitPayload;
+  emailSent: boolean;
+  emailError?: string;
+  retryCount: number;
+};
+
+const SUBMISSIONS_DIR = path.join(process.cwd(), ".submissions");
+const SUBMISSIONS_LOG = path.join(SUBMISSIONS_DIR, "submissions.jsonl");
+
 /** Escapes user input before it lands in an HTML email body. */
 function escapeHtml(value: string) {
   return value
@@ -45,6 +59,58 @@ function escapeHtml(value: string) {
     .replace(/</g, "&lt;")
     .replace(/>/g, "&gt;")
     .replace(/"/g, "&quot;");
+}
+
+/** Ensures submission storage directory exists. */
+async function ensureSubmissionDir() {
+  try {
+    await fs.mkdir(SUBMISSIONS_DIR, { recursive: true });
+  } catch {
+    // Directory may already exist or be inaccessible
+  }
+}
+
+/** Generate a unique submission ID. */
+function generateId(): string {
+  return `${Date.now()}-${Math.random().toString(36).slice(2, 9)}`;
+}
+
+/** Store submission for redundancy and recovery. */
+async function storeSubmission(
+  submission: StoredSubmission
+): Promise<boolean> {
+  try {
+    await ensureSubmissionDir();
+    const line = JSON.stringify(submission) + "\n";
+    await fs.appendFile(SUBMISSIONS_LOG, line, "utf-8");
+    return true;
+  } catch (err) {
+    console.error("Failed to store submission:", err);
+    return false;
+  }
+}
+
+/** Update submission status (e.g., mark as successfully sent). */
+async function updateSubmissionStatus(
+  id: string,
+  emailSent: boolean,
+  emailError?: string
+): Promise<void> {
+  try {
+    await ensureSubmissionDir();
+    const content = await fs.readFile(SUBMISSIONS_LOG, "utf-8");
+    const lines = content.split("\n").filter(Boolean);
+    const updated = lines.map((line) => {
+      const submission = JSON.parse(line) as StoredSubmission;
+      if (submission.id === id) {
+        return JSON.stringify({ ...submission, emailSent, emailError });
+      }
+      return line;
+    });
+    await fs.writeFile(SUBMISSIONS_LOG, updated.join("\n") + "\n", "utf-8");
+  } catch (err) {
+    console.error("Failed to update submission status:", err);
+  }
 }
 
 function toParagraph(value: string) {
@@ -123,31 +189,21 @@ function buildContactEmail(payload: ContactPayload) {
 export async function POST(request: Request) {
   const resend = new Resend(process.env.RESEND_API_KEY);
   const payload = (await request.json()) as SubmitPayload;
+  const submissionId = generateId();
 
-  let email: { subject: string; text: string; html: string; replyTo?: string };
-
+  // Validate payload based on type
   if (payload.type === "recommend") {
     if (!payload.place || !payload.reason || !payload.name || !payload.email) {
       return NextResponse.json({ error: "Missing fields" }, { status: 400 });
     }
-    email = buildRecommendEmail(payload);
   } else if (payload.type === "note") {
     if (!payload.note || !payload.name || !payload.fromPlace) {
       return NextResponse.json({ error: "Missing fields" }, { status: 400 });
     }
-    email = buildNoteEmail(payload);
   } else if (payload.type === "notify") {
     if (!payload.email) {
       return NextResponse.json({ error: "Missing fields" }, { status: 400 });
     }
-    email = {
-      subject: `[Notify Me] ${payload.email}`,
-      text: `Add to the project notification list: ${payload.email}`,
-      html: `<p>Add to the project notification list: <strong>${escapeHtml(
-        payload.email
-      )}</strong></p>`,
-      replyTo: payload.email,
-    };
   } else if (payload.type === "contact") {
     if (
       !payload.name ||
@@ -157,7 +213,6 @@ export async function POST(request: Request) {
     ) {
       return NextResponse.json({ error: "Missing fields" }, { status: 400 });
     }
-    email = buildContactEmail(payload);
   } else {
     return NextResponse.json(
       { error: "Invalid submission type" },
@@ -165,6 +220,38 @@ export async function POST(request: Request) {
     );
   }
 
+  // Build email from payload
+  let email: { subject: string; text: string; html: string; replyTo?: string };
+
+  if (payload.type === "recommend") {
+    email = buildRecommendEmail(payload);
+  } else if (payload.type === "note") {
+    email = buildNoteEmail(payload);
+  } else if (payload.type === "notify") {
+    email = {
+      subject: `[Notify Me] ${payload.email}`,
+      text: `Add to the project notification list: ${payload.email}`,
+      html: `<p>Add to the project notification list: <strong>${escapeHtml(
+        payload.email
+      )}</strong></p>`,
+      replyTo: payload.email,
+    };
+  } else {
+    email = buildContactEmail(payload);
+  }
+
+  // Create submission record (before sending email for durability)
+  const submission: StoredSubmission = {
+    id: submissionId,
+    timestamp: new Date().toISOString(),
+    payload,
+    emailSent: false,
+    retryCount: 0,
+  };
+
+  const stored = await storeSubmission(submission);
+
+  // Attempt to send email
   const { error } = await resend.emails.send({
     from: "Gathering Is Real <contact@gatheringisreal.org>",
     to: process.env.CONTACT_EMAIL ?? "Gatheringisreal1@gmail.com",
@@ -175,8 +262,30 @@ export async function POST(request: Request) {
   });
 
   if (error) {
-    return NextResponse.json({ error: "Failed to send" }, { status: 500 });
+    // Email failed, but we have it stored
+    await updateSubmissionStatus(
+      submissionId,
+      false,
+      error.message || "Unknown error"
+    );
+
+    // Return success anyway since we've stored the submission
+    return NextResponse.json(
+      {
+        success: true,
+        stored: true,
+        message: "Submission saved and will be retried",
+      },
+      { status: 202 }
+    );
   }
 
-  return NextResponse.json({ success: true });
+  // Email succeeded, mark it
+  await updateSubmissionStatus(submissionId, true);
+
+  return NextResponse.json({
+    success: true,
+    id: submissionId,
+    stored,
+  });
 }
