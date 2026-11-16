@@ -10,8 +10,8 @@
 !.yarn/releases
 !.yarn/versions
 
-#claude ignore
-.claude
+#claude ignore (shared .claude/settings.json is tracked)
+.claude/settings.local.json
 
 # testing
 /coverage

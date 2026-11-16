@@ -1,0 +1,4 @@
+#!/bin/bash
+# Mirrors CI so a broken push is caught locally. Installed by scripts/install-git-hooks.sh.
+set -e
+npm run check

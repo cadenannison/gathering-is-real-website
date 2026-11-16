@@ -5,7 +5,12 @@
   "scripts": {
     "dev": "next dev",
     "build": "next build",
-    "start": "next start"
+    "start": "next start",
+    "typecheck": "tsc --noEmit",
+    "content:check": "node --disable-warning=MODULE_TYPELESS_PACKAGE_JSON scripts/check-content.ts",
+    "smoke": "node --disable-warning=MODULE_TYPELESS_PACKAGE_JSON scripts/smoke.mjs",
+    "check:fast": "npm run typecheck && npm run content:check",
+    "check": "npm run check:fast && npm run build && npm run smoke"
   },
   "dependencies": {
     "clsx": "^2.1.1",
@@ -31,5 +36,8 @@
       "react": "$react",
       "react-dom": "$react-dom"
     }
+  },
+  "engines": {
+    "node": ">=22.18"
   }
 }
