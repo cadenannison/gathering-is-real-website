@@ -8,9 +8,13 @@ The site's words, photos and project list all live in a few small files. You cha
 |---|---|---|
 | Announce the next project | `data/currentProject.ts` | Fill in `name`, `location`, `need`, `who`, `when`, then change `active: false` to `active: true` |
 | Add a finished project | `data/pastProjects.ts` | Copy the whole `{ ... }` block for Guam, paste it below with a comma, change every value |
+| Announce an event or news | `data/announcements.ts` | Copy the whole `{ ... }` block for the Silent Disco, paste it below with a comma, change the values. Events disappear by themselves after `endsAt`, news after `expiresAt`. Optional photo: upload a `.jpg` to `public/images/announcements/` and set `image` |
+| Change or remove the featured video (set src to null) | `data/media.ts` | Under `homeFeature`, change `src` (and `poster`) to the new file path, or set `src` to `null` to hide the video section completely |
 | Change a founder's name/photo | `data/founders.ts` | Edit the text or photo path |
 | Swap a video or the About photo | `data/media.ts` | Change the path (upload the file first, see below) |
 | Change Instagram/Facebook/YouTube links | `data/socials.ts` | Edit `url` and `handle` |
+| Add an Instagram post to /trending | `data/instagram.ts` | To add a post, paste its URL into `data/instagram.ts`. |
+| Add a flyer to /trending (moves to "Past events" by itself) | `data/trendingItems.ts` | Upload a .jpg to `public/images/`, copy a block, set `expiresAt` |
 | Change wording on a page | `app/<page>/page.tsx` | Edit the text between the tags; leave everything with `<` `>` and `{ }` alone |
 
 ## How to publish a change (from the GitHub website)

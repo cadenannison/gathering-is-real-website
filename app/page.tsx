@@ -4,6 +4,9 @@ import AnimatedSection from "@/components/ui/AnimatedSection";
 import Hero from "@/components/sections/Hero";
 import RecommendPlaceSection from "@/components/sections/RecommendPlaceSection";
 import HelpNowSection from "@/components/sections/HelpNowSection";
+import HomeFeatureVideo from "@/components/sections/HomeFeatureVideo";
+import AnnouncementsSection from "@/components/sections/AnnouncementsSection";
+import { announcements } from "@/data/announcements";
 import { pastProjects } from "@/data/pastProjects";
 import type { Metadata } from "next";
 
@@ -18,6 +21,14 @@ export default function HomePage() {
     <>
       {/* p.1 — Hero */}
       <Hero />
+
+      <HomeFeatureVideo />
+
+      <AnnouncementsSection
+        items={announcements}
+        buildTime={Date.now()}
+        className="pb-14 md:pb-16"
+      />
 
       {/* p.2 — Recommend a place */}
       <section id="map" className="scroll-mt-16 py-20 md:py-28">

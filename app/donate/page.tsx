@@ -1,6 +1,7 @@
 import Image from "next/image";
 import Container from "@/components/ui/Container";
 import AnimatedSection from "@/components/ui/AnimatedSection";
+import { VENMO_URL } from "@/data/links";
 import type { Metadata } from "next";
 
 export const metadata: Metadata = {
@@ -17,7 +18,7 @@ const methods = [
     blurb:
       "Scan the code or open Venmo and send your donation directly. Include a note — we love hearing why you give.",
     qr: "/images/qr/venmo.png",
-    href: "https://venmo.com/code?user_id=4667423261197681885&created=1787176974.037128&printed=1",
+    href: VENMO_URL,
     cta: "Open Venmo",
   },
   {

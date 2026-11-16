@@ -5,6 +5,8 @@ import AnimatedSection from "@/components/ui/AnimatedSection";
 import EmptyPhotoPlaceholder from "@/components/ui/EmptyPhotoPlaceholder";
 import WriteNoteButton from "@/components/sections/WriteNoteButton";
 import NotifyForm from "@/components/sections/NotifyForm";
+import AnnouncementsSection from "@/components/sections/AnnouncementsSection";
+import { announcements } from "@/data/announcements";
 import { currentProject } from "@/data/currentProject";
 import type { Metadata } from "next";
 
@@ -37,6 +39,12 @@ export default function CurrentProjectPage() {
           </div>
         </Container>
       </section>
+
+      <AnnouncementsSection
+        items={announcements}
+        buildTime={Date.now()}
+        className="pt-12 md:pt-16"
+      />
 
       {active ? (
         /* p.13 — Project details */
