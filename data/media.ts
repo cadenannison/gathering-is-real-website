@@ -13,6 +13,16 @@ export const media = {
     currentProject: "/videos/learnAboutCurrentProject.mp4" as string | null,
     donate: "/videos/packingBox.mp4" as string | null,
   },
+  /**
+   * Featured video at the top of the home page, under the hero.
+   * Set `src` to null to hide the whole section (nothing shows on the site).
+   */
+  homeFeature: {
+    label: "Current project",
+    src: "/videos/home-feature.mp4" as string | null,
+    poster: "/images/home-feature-poster.jpg" as string | null,
+    caption: "",
+  },
 };
 
 /**
